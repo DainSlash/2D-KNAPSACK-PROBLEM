@@ -2,6 +2,11 @@ from Knapsack import knapsack
 from Item import item
 from Shelf import shelf
 
+MAX_HEIGHT = 20
+MAX_WIDTH = 20  
+MAX_VALUE = 500
+
+
 def main():
     s = shelf()
     # item(name, height, width, price)
@@ -19,8 +24,8 @@ def main():
     s.print_shelf()
 
 
-    # height, width, shelf, max_value
-    # ks = knapsack(20, 20, shelf, 500)
+    # height, width, max_value
+    # ks = knapsack(20, 20, 500)
     # ks.print_solution()
 
 if __name__ == "__main__":

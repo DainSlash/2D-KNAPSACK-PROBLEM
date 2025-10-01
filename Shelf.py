@@ -1,16 +1,24 @@
 class shelf:
     def __init__(self):
-        # Tupla (item, quantidade)
-        self._items = []
+        # Dicionário {item.name: (item, quantidade)}
+        self._items = {}
 
     def add_item(self, item, quantity):
         if quantity <= 0:
-            self._items.append((item, 1))
-        self._items.append((item, quantity))
+            quantity = 1
+        if item.name in self._items:
+            current_quantity = self._items[item.name][1]
+            self._items[item.name] = (item, current_quantity + quantity)
+        self._items[item.name] = (item, quantity)
 
-    def get_itens(self):
+    def get_max_item_quantity(self, item):
+        if item.name in self._items:
+            return self._items[item.name][1]
+        return 0
+
+    def get_items(self):
         return self._items
 
     def print_shelf(self):
-        for item, quantity in self._items:
+        for name, (item, quantity) in self._items.items():
             print(f"{item} quantity={quantity}")
