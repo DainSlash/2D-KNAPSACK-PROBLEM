@@ -1,4 +1,4 @@
-class shelf:
+class allele_domain:
     def __init__(self):
         # Dicionário {item.name: (item, quantidade)}
         self._items = {}
@@ -17,8 +17,10 @@ class shelf:
         return 0
 
     def get_items(self):
-        return self._items
+        return [item for item, _ in self._items.values()]
 
-    def print_shelf(self):
+    def __str__ (self):
+        result = "Allele Domain:\n"
         for name, (item, quantity) in self._items.items():
-            print(f"{item} quantity={quantity}")
+            result += f"{item} quantity={quantity}\n"
+        return result

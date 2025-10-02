@@ -1,13 +1,17 @@
 class knapsack:
-    def __init__(self, height, width, items, max_value):
-        self.height = height
+    def __init__(self, width, height, max_price):
         self.width = width
-        self.items = items
-        self.max_value = max_value
-        self.actual_value = sum([item.price for item in items])
+        self.height = height
+        self.max_price = max_price
         
 
         self.ks = [[0 for _ in range(width + 1)] for _ in range(height + 1)]
+
+    def test_chromossome(self, chromossome):
+        self.actual_value = sum([allele.item.price for allele in chromossome])
+        
+        pass
+
 
     def print_solution(self):
         self._print_items()
@@ -17,10 +21,14 @@ class knapsack:
         self._print_ks_matrix()
 
 
+    def get_area(self):
+        return self.height * self.width
+
     def _print_ks_info(self):
-        print(f"Knapsack height: {self.height}, width: {self.width}, max value: {self.max_value}")
+        print(f"Knapsack height: {self.height}, width: {self.width}, max value: {self.max_price}")
         print(f"Actual value: {self.actual_value}")
         print(f"Number of items: {len(self.items)}")
+        print(f"Area: {self.get_area()}")
 
     def _print_ks_matrix(self):
         print("Knapsack matrix:")
