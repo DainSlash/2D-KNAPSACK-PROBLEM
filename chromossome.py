@@ -5,6 +5,7 @@ class chromossome:
     
     fits_in_knapsack = True
     aptitude = 0
+    selection_probability = 0.0
 
     def __init__(self, aleles):
         self.alleles = aleles

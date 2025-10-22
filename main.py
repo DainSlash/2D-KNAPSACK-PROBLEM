@@ -1,11 +1,12 @@
-from knapsack import knapsack
+from Knapsack import knapsack
 from allele_domain import allele_domain
-from item import item
+from Item import item
 from population import population
+from evaluate import evaluate
 
 MAX_WIDTH = 30  
 MAX_HEIGHT = 20
-MAX_PRICE = 500
+MAX_PRICE = 5000
 POPULATION_SIZE = 100
 
 def main():
@@ -30,6 +31,7 @@ def main():
     # population(knapsack, shelf)
     pop = population(environment, shelf, POPULATION_SIZE)
     pop.print_population()
+    pop = evaluate(pop, MAX_PRICE)
 
 if __name__ == "__main__":
     main()
