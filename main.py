@@ -1,8 +1,7 @@
-from Knapsack import knapsack
+from knapsack import knapsack
 from allele_domain import allele_domain
-from Item import item
+from item import item
 from population import population
-from evaluate import evaluate
 
 MAX_WIDTH = 30  
 MAX_HEIGHT = 20
@@ -30,8 +29,21 @@ def main():
     
     # population(knapsack, shelf)
     pop = population(environment, shelf, POPULATION_SIZE)
+    pop.evaluate()
+
+    print("\nPopulação inicial:")
     pop.print_population()
-    pop = evaluate(pop, MAX_PRICE)
+    
+
+    pop.evolve(generations=100, elite_size=2)
+    
+    
+
+    print("\nPopulação FINAL:")
+    pop.print_population()
+
+    print("\nMelhor solução encontrada:")
+    pop.chromossomes[0].print_chromossome()
 
 if __name__ == "__main__":
     main()

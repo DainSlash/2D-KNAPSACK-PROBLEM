@@ -1,5 +1,5 @@
 import random
-GEN_MUTATION_RATE = 0.3
+GEN_MUTATION_RATE = 0.1
 
 class allele:
     def __init__(self, item, x, y):
@@ -16,15 +16,15 @@ class allele:
         mutate_x = random.random() < mutation_rate
         mutate_y = random.random() < mutation_rate
 
-        # Se nenhum gene foi escolhido para mutar, força a mutação de um aleatório
-        if not (mutate_item or mutate_x or mutate_y):
-            gene = random.choice(['item', 'x', 'y'])
-            if gene == 'item':
-                mutate_item = True
-            elif gene == 'x':
-                mutate_x = True
-            else:
-                mutate_y = True
+        # # Se nenhum gene foi escolhido para mutar, força a mutação de um aleatório
+        # if not (mutate_item or mutate_x or mutate_y):
+        #     gene = random.choice(['item', 'x', 'y'])
+        #     if gene == 'item':
+        #         mutate_item = True
+        #     elif gene == 'x':
+        #         mutate_x = True
+        #     else:
+        #         mutate_y = True
 
         if mutate_item:
             self.item = random.choice(itens)
