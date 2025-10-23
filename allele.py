@@ -1,5 +1,5 @@
 import random
-GEN_MUTATION_RATE = 0.1
+GEN_MUTATION_RATE = 0.3
 
 class allele:
     def __init__(self, item, x, y):
