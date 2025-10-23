@@ -2,6 +2,14 @@ from knapsack import knapsack
 from allele_domain import allele_domain
 from item import item
 from population import population
+from visualizer import GAVisualizer
+import os
+
+import matplotlib.pyplot as plt
+# import numpy as np
+# from matplotlib.patches import Rectangle
+# import matplotlib.gridspec as gridspec
+
 
 MAX_WIDTH = 30  
 MAX_HEIGHT = 20
@@ -30,20 +38,34 @@ def main():
     # population(knapsack, shelf)
     pop = population(environment, shelf, POPULATION_SIZE)
     pop.evaluate()
-
-    print("\nPopulação inicial:")
+    os.system('cls')
+    print('INICIO TOTAL')
     pop.print_population()
     
 
-    pop.evolve(generations=100, elite_size=2)
+    visualizer = pop.evolve(generations=250, elite_size=2)
     
+    # Plot final solution
+    plt.figure(figsize=(15, 10))
     
-
-    print("\nPopulação FINAL:")
-    pop.print_population()
-
-    print("\nMelhor solução encontrada:")
-    pop.chromossomes[0].print_chromossome()
+    # Plot history
+    history_fig = visualizer.plot_history()
+    history_fig.savefig('evolution_history.png')
+    
+    # Plot best solution
+    solution_fig = visualizer.plot_knapsack_solution(
+        pop.chromossomes[0], 
+        environment
+    )
+    solution_fig.savefig('best_solution.png')
+    
+    # Show interactive viewer if in Jupyter notebook
+    try:
+        visualizer.create_interactive_viewer(environment)
+    except ImportError:
+        print("Interactive viewer requires Jupyter notebook")
+    
+    plt.show()
 
 if __name__ == "__main__":
     main()
