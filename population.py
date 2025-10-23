@@ -4,7 +4,7 @@ from visualizer import GAVisualizer
 
 import random
 
-MUTATION_RATE = 0.01
+MUTATION_RATE = 0.1
 
 class population:
     def __init__(self, knapsack, shelf, population_size):
@@ -60,10 +60,15 @@ class population:
         return self.chromossomes[-1]
 
     def crossover(self, parent1, parent2):
-        crossover_point = random.randint(1, len(parent1.alleles)-1)
-        
-        child1_alleles = parent1.alleles[:crossover_point] + parent2.alleles[crossover_point:]
-        child2_alleles = parent2.alleles[:crossover_point] + parent1.alleles[crossover_point:]
+        go_cross  = random.random()
+        if go_cross < 0.90:
+            crossover_point = random.randint(1, len(parent1.alleles)-2) ## -2? pega o index_final - 1 / index_final = (tamanho -1)
+            
+            child1_alleles = parent1.alleles[:crossover_point] + parent2.alleles[crossover_point:]
+            child2_alleles = parent2.alleles[:crossover_point] + parent1.alleles[crossover_point:]
+        else:
+            child1_alleles = parent1.alleles[:]
+            child2_alleles = parent2.alleles[:]
         
         return chromossome(child1_alleles), chromossome(child2_alleles)
 
@@ -76,7 +81,9 @@ class population:
         return chromossome
 
     def elitism(self, elite_size):
-        return self.chromossomes[:elite_size]
+
+        import pickle
+        return [pickle.loads(pickle.dumps(chrom)) for chrom in self.chromossomes[:elite_size]]
 
     def reproduce(self, new_population):
         while len(new_population) < self.population_size:
@@ -85,6 +92,8 @@ class population:
             
             if parent1 and parent2:
                 child1, child2 = self.crossover(parent1, parent2)
+                child1 = self.mutate(child1)
+                child2 = self.mutate(child2)
 
                 new_population.append(child1)
                 if len(new_population) < self.population_size:
@@ -93,7 +102,7 @@ class population:
         self.chromossomes = new_population.copy()
 
 
-    def evolve(self, generations=100, elite_size=2):
+    def evolve(self, generations=500, elite_size=2):
         visualizer = GAVisualizer()
         for generation in range(generations):
             elite = self.elitism(elite_size)
@@ -103,20 +112,25 @@ class population:
             
             new_population = []
             new_population.extend(elite)
-            
+            print("\n\nNOVO POPULACAO: ELITE")
+            for c in new_population:
+                c.print_chromossome()
+                print("\n")
+
             self.reproduce(new_population)
-            for c in set(self.chromossomes) - set(elite):
-                c = self.mutate(c)
+            #for c in set(self.chromossomes) - set(elite):
+            #    c = self.mutate(c)
 
             self.evaluate()
             
             visualizer.update_history(self, generation)
-            self.print_population()
+            #self.print_population()
             print(f"Melhor aptidão: {self.chromossomes[0].aptitude}")
             print(f"Melhor preço: {self.chromossomes[0].get_price()}")
+        self.print_population()
         return visualizer
 
 
     def print_population(self):
-        for chromossome in self.chromossomes:
+        for chromossome in self.chromossomes[::-1]:
             chromossome.print_chromossome()

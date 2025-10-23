@@ -1,8 +1,9 @@
-OVELAPPING_WEIGHT = 2.0
-OVERFLOW_WEIGHT = 4.5
+OVELAPPING_WEIGHT = 98.2
+OVERFLOW_WEIGHT = 100
 EXCESS_ITEM_WEIGHT = 1000
-PRICE_WEIGHT = 2.0
+PRICE_WEIGHT = 2
 AREA_WEIGHT = 0.5
+from math import log2
 
 class chromossome:
     overlapping_area = 0
@@ -28,15 +29,20 @@ class chromossome:
         self.overlapping_area = 0
         for i in range(len(self.alleles)):
             for j in range(i + 1, len(self.alleles)):
-                x_overlap = max(0, min(self.alleles[i].x + self.alleles[i].item.width, 
-                                     self.alleles[j].x + self.alleles[j].item.width) - 
+                x_overlap = max(0, 
+                                min(self.alleles[i].x + self.alleles[i].item.width, self.alleles[j].x + self.alleles[j].item.width)
+                                  - 
                                 max(self.alleles[i].x, self.alleles[j].x))
                 
-                y_overlap = max(0, min(self.alleles[i].y + self.alleles[i].item.height, 
-                                     self.alleles[j].y + self.alleles[j].item.height) - 
+                y_overlap = max(0, 
+                                min(self.alleles[i].y + self.alleles[i].item.height, self.alleles[j].y + self.alleles[j].item.height)
+                                 - 
                                 max(self.alleles[i].y, self.alleles[j].y))
                 
-                self.overlapping_area += x_overlap * y_overlap
+                self.overlapping_area += (x_overlap * y_overlap)
+                
+        #self.overlapping_area = (log2(self.overlapping_area) * self.overlapping_area)
+
         return self.overlapping_area
 
     def calculate_overflow_area(self, knapsack):
@@ -48,7 +54,6 @@ class chromossome:
             self.overflow_area += (x_overflow * allele.item.height + 
                                  y_overflow * allele.item.width - 
                                  x_overflow * y_overflow)
-
         return self.overflow_area
 
     def check_quantity_constraints(self, allele_domain):
@@ -71,20 +76,20 @@ class chromossome:
         return self.used_area
 
     def calculate_aptitude(self, knapsack, allele_domain):
-        overlapping_penalty = self.calculate_overlapping_area() * OVELAPPING_WEIGHT 
-        overflow_penalty = self.calculate_overflow_area(knapsack) * OVERFLOW_WEIGHT
+        overlapping_penalty = (self.calculate_overlapping_area() * OVELAPPING_WEIGHT)
+        overflow_penalty = (self.calculate_overflow_area(knapsack) * OVERFLOW_WEIGHT)
         excess_items_penalty = self.check_quantity_constraints(allele_domain) * EXCESS_ITEM_WEIGHT
         used_area = self.calculate_used_area()
-        price_penalty = max(0, self.get_price() - knapsack.max_price) * PRICE_WEIGHT
+        price_penalty = (max(0, self.get_price() - knapsack.max_price) + max(0, knapsack.max_price - self.get_price())) ** PRICE_WEIGHT
         
         area_utilization = used_area / knapsack.get_area()
-        area_penalty = (1 - area_utilization) * knapsack.get_area() * AREA_WEIGHT
+        area_penalty = 0 #(1 - area_utilization) * knapsack.get_area() * AREA_WEIGHT
         
-        self.aptitude = (overlapping_penalty + 
-                        overflow_penalty + 
-                        excess_items_penalty + 
-                        price_penalty + 
-                        area_penalty)
+        self.aptitude = overlapping_penalty + overflow_penalty#(overlapping_penalty + 
+                        #overflow_penalty + 
+                        #excess_items_penalty + 
+                        #price_penalty + 
+                        #area_penalty)
         
         self.fits_in_knapsack = (overflow_penalty == 0 and 
                                 overlapping_penalty == 0 and 

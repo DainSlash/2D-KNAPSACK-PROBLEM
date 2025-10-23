@@ -1,6 +1,6 @@
-from knapsack import knapsack
+from Knapsack import knapsack
 from allele_domain import allele_domain
-from item import item
+from Item import item
 from population import population
 from visualizer import GAVisualizer
 import os
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 MAX_WIDTH = 30  
 MAX_HEIGHT = 20
 MAX_PRICE = 5000
-POPULATION_SIZE = 100
+POPULATION_SIZE = 50
 
 def main():
     shelf = allele_domain()
@@ -43,7 +43,7 @@ def main():
     pop.print_population()
     
 
-    visualizer = pop.evolve(generations=250, elite_size=2)
+    visualizer = pop.evolve(generations=500, elite_size=2)
     
     # Plot final solution
     plt.figure(figsize=(15, 10))
@@ -58,6 +58,9 @@ def main():
         environment
     )
     solution_fig.savefig('best_solution.png')
+
+    visualizer.compare_initial_final(environment)
+
     
     # Show interactive viewer if in Jupyter notebook
     try:
