@@ -4,8 +4,7 @@ from visualizer import GAVisualizer
 
 import random
 
-MUTATION_RATE = 0.1
-
+MUTATION_RATE = 0.15
 class population:
     def __init__(self, knapsack, shelf, population_size):
         self.environment = knapsack
@@ -61,7 +60,7 @@ class population:
 
     def crossover(self, parent1, parent2):
         go_cross  = random.random()
-        if go_cross < 0.90:
+        if go_cross < 0.80:
             crossover_point = random.randint(1, len(parent1.alleles)-2) ## -2? pega o index_final - 1 / index_final = (tamanho -1)
             
             child1_alleles = parent1.alleles[:crossover_point] + parent2.alleles[crossover_point:]
@@ -102,7 +101,7 @@ class population:
         self.chromossomes = new_population.copy()
 
 
-    def evolve(self, generations=500, elite_size=2):
+    def evolve(self, generations=5000, elite_size=2):
         visualizer = GAVisualizer()
         for generation in range(generations):
             elite = self.elitism(elite_size)

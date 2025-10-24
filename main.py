@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 MAX_WIDTH = 30  
 MAX_HEIGHT = 20
 MAX_PRICE = 5000
-POPULATION_SIZE = 50
+POPULATION_SIZE = 40
 
 def main():
     shelf = allele_domain()
@@ -43,7 +43,7 @@ def main():
     pop.print_population()
     
 
-    visualizer = pop.evolve(generations=500, elite_size=2)
+    visualizer = pop.evolve(generations=5000, elite_size=4)
     
     # Plot final solution
     plt.figure(figsize=(15, 10))

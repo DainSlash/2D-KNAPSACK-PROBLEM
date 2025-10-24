@@ -1,8 +1,8 @@
-OVELAPPING_WEIGHT = 98.2
-OVERFLOW_WEIGHT = 100
+OVELAPPING_WEIGHT = 200
+OVERFLOW_WEIGHT = 200
 EXCESS_ITEM_WEIGHT = 1000
-PRICE_WEIGHT = 2
-AREA_WEIGHT = 0.5
+PRICE_WEIGHT = 7
+AREA_WEIGHT = 3
 from math import log2
 
 class chromossome:
@@ -80,12 +80,13 @@ class chromossome:
         overflow_penalty = (self.calculate_overflow_area(knapsack) * OVERFLOW_WEIGHT)
         excess_items_penalty = self.check_quantity_constraints(allele_domain) * EXCESS_ITEM_WEIGHT
         used_area = self.calculate_used_area()
-        price_penalty = (max(0, self.get_price() - knapsack.max_price) + max(0, knapsack.max_price - self.get_price())) ** PRICE_WEIGHT
+        price_penalty = (max(0, self.get_price() - knapsack.max_price) + max(0, knapsack.max_price - self.get_price()))* PRICE_WEIGHT
         
         area_utilization = used_area / knapsack.get_area()
-        area_penalty = 0 #(1 - area_utilization) * knapsack.get_area() * AREA_WEIGHT
+        area_penalty = (1 - area_utilization) * knapsack.get_area() * AREA_WEIGHT
         
-        self.aptitude = overlapping_penalty + overflow_penalty#(overlapping_penalty + 
+        self.aptitude = overlapping_penalty + overflow_penalty + price_penalty
+                        #(overlapping_penalty + 
                         #overflow_penalty + 
                         #excess_items_penalty + 
                         #price_penalty + 
