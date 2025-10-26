@@ -35,14 +35,14 @@ class GAVisualizer:
         colors = plt.cm.Set3(np.linspace(0, 1, len(chromossome.alleles)))
         for allele, color in zip(chromossome.alleles, colors):
             ax.add_patch(Rectangle((allele.x, allele.y), 
-                                 allele.item.width, 
-                                 allele.item.height,
+                                 allele.get_width(), 
+                                 allele.get_height(),
                                  facecolor=color, 
                                  alpha=0.5,
                                  edgecolor='black'))
             # Add item name and price
-            plt.text(allele.x + allele.item.width/2, 
-                    allele.y + allele.item.height/2,
+            plt.text(allele.x + allele.get_width()/2, 
+                    allele.y + allele.get_height()/2,
                     f'{allele.item.name}\n${allele.item.price:.0f}',
                     ha='center', va='center')
 
@@ -126,18 +126,18 @@ class GAVisualizer:
         
         for allele in chromossome.alleles:
             # Check if the item exceeds the knapsack boundaries
-            if (allele.x + allele.item.width > knapsack.width or
-                allele.y + allele.item.height > knapsack.height):
+            if (allele.x + allele.get_width() > knapsack.width or
+                allele.y + allele.get_height() > knapsack.height):
                 exceeds = True
                 fits = False
             
             # Check for overlaps with other items
             for other in chromossome.alleles:
                 if allele != other:
-                    if not (allele.x + allele.item.width <= other.x or
-                            allele.x >= other.x + other.item.width or
-                            allele.y + allele.item.height <= other.y or
-                            allele.y >= other.y + other.item.height):
+                    if not (allele.x + allele.get_width() <= other.x or
+                            allele.x >= other.x + other.get_width() or
+                            allele.y + allele.get_height() <= other.y or
+                            allele.y >= other.y + other.get_height()):
                         overlaps = True
         
         return {"fits": fits, "overlaps": overlaps, "exceeds": exceeds}
@@ -149,13 +149,13 @@ class GAVisualizer:
         colors = plt.cm.Set3(np.linspace(0, 1, len(chromossome.alleles)))
         for allele, color in zip(chromossome.alleles, colors):
             ax.add_patch(Rectangle((allele.x, allele.y), 
-                                   allele.item.width, 
-                                   allele.item.height,
+                                   allele.get_width(), 
+                                   allele.get_height(),
                                    facecolor=color, 
                                    alpha=0.5,
                                    edgecolor='black'))
-            ax.text(allele.x + allele.item.width/2, 
-                    allele.y + allele.item.height/2,
+            ax.text(allele.x + allele.get_width()/2, 
+                    allele.y + allele.get_height()/2,
                     f'{allele.item.name}\n${allele.item.price:.0f}',
                     ha='center', va='center')
         ax.set_xlim(-1, knapsack.width + 1)

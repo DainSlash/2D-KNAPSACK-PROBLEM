@@ -1,6 +1,6 @@
-from Knapsack import knapsack
+from knapsack import knapsack
 from allele_domain import allele_domain
-from Item import item
+from item import item
 from population import population
 from visualizer import GAVisualizer
 import os
@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 
 MAX_WIDTH = 30  
-MAX_HEIGHT = 20
+MAX_HEIGHT = 30
 MAX_PRICE = 5000
 POPULATION_SIZE = 40
 

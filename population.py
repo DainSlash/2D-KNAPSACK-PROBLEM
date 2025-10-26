@@ -40,7 +40,8 @@ class population:
             for i in range(len(possible_items)):
                 x = random.randint(0, self.environment.width - possible_items[i].width)
                 y = random.randint(0, self.environment.height - possible_items[i].height)
-                chromossome_alleles.append(allele(random.choice(possible_items), x, y))
+                normal_orientation = random.random() >= 0.5
+                chromossome_alleles.append(allele(random.choice(possible_items), x, y, normal_orientation))
                 
             self.chromossomes.append(chromossome(chromossome_alleles))
 
